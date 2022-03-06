@@ -7,7 +7,7 @@ Lately I have been studying about threat hunting and I came across this awesome 
 
 ![](./Screenshots/Image0.png)
 
-### Question 1
+## Question 1
 ```
 The Threat Hunting process usually starts with the analyst making a hypothesis about a possible compromise vector or techniques used by an attacker. In this scenario, your initial hypothesis is as follows: "The attacker used the WMI subscription mechanism to obtain persistence within the infrastructure". Verify this hypothesis and find the name of the WMI Event Consumer used by the attacker to maintain his foothold.
 ```
@@ -34,7 +34,7 @@ Host: DESKTOP-BZ202CP.cybercorp.com
 User: CYBERCORP\john.goldberg
 Process ID: 5772*
 
-**Question 2**
+## Question 2
 
 ```
 In the previous step, you looked for traces of the attacker's persistence in the compromised system through a WMI subscription mechanism. Now find the process that installed the WMI subscription. Answer the question by specifying the PID of that process and the name of its executable file, separated by a comma without spaces.
@@ -46,7 +46,7 @@ Remember the process ID 5772 that we obtained from the logs, let's make a generi
 
 Seems like its `winword.exe`.
 
-**Question 3**
+## Question 3
 
 ```
 The process described in the previous question was used to open a file extracted from the archive that user received by email. Specify a SHA256 hash of the file extracted and opened from the archive.
@@ -85,7 +85,7 @@ And we have only one `FileCreate` event
 
 ![](./Screenshots/Image10.png)
 
-**Question 4**
+## Question 4
 
 ```
 The file mentioned in question 3, is not malicious in and of itself, but when it is opened, another file is downloaded from the Internet that already contains the malicious code. Answer the question by specifying the address, from which this file was downloaded, and the SHA256 hash of the downloaded file, separated by commas without spaces.
@@ -97,7 +97,7 @@ By this time we know that `fontstyles[1].dotm` is the malicious file that was do
 
 We can see the series of events happening as Macro enabled --> network connection --> dotm file created --> dotm file opened
 
-**Question 5**
+## Question 5
 
 ```
 The malicious code from the file, mentioned in question 4, directly installed a WMI subscription, which we started our hunting with, and also downloaded several files from the Internet to the compromised host. For file downloading, the attacker used a tricky technique that gave him the opportunity to hide the real process, which initiated the corresponding network activity. Specify the SHA256 hash of the operating system component whose functionality was used by the attacker to download files from the Internet.
@@ -111,7 +111,7 @@ A bit of googling revealed that this dll when loaded in word.exe allows usage of
 
 Source: https://cyberpolygon.com/materials/hunting-for-advanced-tactics-techniques-and-procedures-ttps/
 
-**Question 6**
+## Question 6
 
 ```
 Specify the domain name of the resource from which the files mentioned in question 5 were supposedly downloaded as a result of malicious code execution.
@@ -123,7 +123,7 @@ Looking at sorrounding documents and applying filter `enrich.ioa.rules: exist` w
 
 The entry is marked as `win_unusual_ie_com_dll_host_process`
 
-**Question 7**
+## Question 7
 
 ```
 The first file downloaded (as a result of executing the code in question 5) contained encoded executable code (PE), which after downloading was recorded in the registry. Specify an MD5 hash of the original representation of that code (PE).
@@ -145,7 +145,7 @@ Using cyberchef we are able to decode the PE file and obtain the md5 hash.
 
 *Time of Event: Jun 21, 2021 @ 23:26:03.000*
 
-**Question 8**
+## Question 8
 
 ```
 The second file downloaded (as a result of code execution, which we talked about in question 5) was a script, that was set up to autostart via WMI Subscription. Specify the SHA256 hash of this script.
@@ -175,7 +175,7 @@ Looking at few other `FileOpen` events around the same time gives us the hash of
 
 ![](./Screenshots/Image20.png)
 
-**Question 9**
+## Question 9
 
 ```
 The script, mentioned in question 8, spawned one of the legitimate system processes and injected into its memory a malicious code that was read and decoded from the registry (this code was mentioned in question 7). This malicious code migrated through a chain of code injections to the address space of another legitimate process, where it continued to run without further migration. For this answer, provide the next data, separated by a comma without spaces:
@@ -223,7 +223,7 @@ PID of winlogon.exe: 1160
 PID of dwm.exe: 8876*
 
 
-**Question 10**
+## Question 10
 
 ```
 The malicious code run by the script is a Reverse Shell. Identify the IP address and port number of its command center.
@@ -242,7 +242,7 @@ And BINGO! we have a network connection to an external IP from rundll32.exe
 *Time of event: Jun 21, 2021 @ 23:41:56.000
 Host: DESKTOP-BZ202CP.cybercorp.com*
 
-**Question 11**
+## Question 11
 
 ```
 As a result of running a malicious code, which we talk about in questions 9 and 10, the attacker got a shell on the compromised host. Using this access, the attacker downloaded the Active Directory collection utility to the host in an encoded form. Specify a comma-separated, non-spaced link where the encoded version of the utility was downloaded and a SHA256 hash of the decoded version that was directly run by the attacker on the compromised host.
@@ -268,7 +268,7 @@ Let's verify this by applying the filter `enrich.ioa.max_confidence : exists` in
 
 *Time of event: Jun 21, 2021 @ 23:46:16.000*
 
-**Question 12**
+## Question 12
 
 ```
 During the post-exploitation process, the attacker used one of the standard Windows utilities to create a memory dump of a sensitive system process that contains credentials of active users in the system. Specify the name of the executable file of the utility used and the name of the memory dump file created, separated by a comma without spaces.
@@ -288,7 +288,7 @@ Source: https://lolbas-project.github.io/lolbas/Libraries/comsvcs/
 
 *Time of event: Jun 21, 2021 @ 23:50:11.535*
 
-**Question 13**
+## Question 13
 
 ```
 Presumably, the attacker extracted the password of one of the privileged accounts from the memory dump we discussed in the previous question and used it to run a malicious code on one of the domain controllers. What account are we talking about? Specify its username and password as the answer in login:password format.
@@ -352,7 +352,7 @@ Let's follow the investigation around the same time frame with the newly spawned
 
 And we can see the Process Create event is followed by an outbound Network Connection to a remote IP on port 8443
 
- **Question 14**
+ ## Question 14
  
  ```
  A compromised user account is a member of two Built-in privileged groups on the Domain Controller. The first group is the Administrators. Find the second group. Provide the SID of this group as an answer.
@@ -385,12 +385,11 @@ And we have a match...
 
 ![](./Screenshots/Image45.png)
 
-**Question 15**
+## Question 15
  
  ```
 As a result of malicious code execution on the domain controller using a compromised account, the attacker got a reverse shell on that host. This shell used a previously not seen IP address as the command center. Specify its address as the answer.
  ```
  
  Well now we know that the outbound network connection was a reverse shell from the DC.
- 
  
