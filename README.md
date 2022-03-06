@@ -1,4 +1,4 @@
-# CyberCorp Case 2 Writeup Part 1
+# CyberCorp Case 2 Writeup
 ---------------------------------------------------------------------
 
 ![](./Screenshots/0_B8fFUCeSuntz-yND.png)
