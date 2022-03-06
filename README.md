@@ -7,7 +7,7 @@ Lately I have been studying about threat hunting and I came across this awesome 
 
 ![](./Screenshots/Image0.png)
 
-**Question 1**
+### Question 1
 ```
 The Threat Hunting process usually starts with the analyst making a hypothesis about a possible compromise vector or techniques used by an attacker. In this scenario, your initial hypothesis is as follows: "The attacker used the WMI subscription mechanism to obtain persistence within the infrastructure". Verify this hypothesis and find the name of the WMI Event Consumer used by the attacker to maintain his foothold.
 ```
@@ -75,7 +75,7 @@ To look at the larger picture we need to check where network connections were ma
 
 We observe a few outward `NetworkConnection` events made by winword.exe to IP's categorised as malicious by ESET while the same file was opened.
 
-Let's check the IP on virustotal...
+Let's check the IP on VirusTotal...
 
 ![](./Screenshots/Image9.png)
 
