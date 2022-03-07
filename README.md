@@ -12,8 +12,6 @@ Lately I have been studying about threat hunting and I came across this awesome 
 The Threat Hunting process usually starts with the analyst making a hypothesis about a possible compromise vector or techniques used by an attacker. In this scenario, your initial hypothesis is as follows: "The attacker used the WMI subscription mechanism to obtain persistence within the infrastructure". Verify this hypothesis and find the name of the WMI Event Consumer used by the attacker to maintain his foothold.
 ```
 
-Ans:
-
 To attain persistence via WMI subscription we must interact with the WMI. Now this can be done via wmic.exe (commandline utility) as well as via COM. But in all cases events will be registered under `root\subscription` namespace. 
 
 Luckily in the hunting data, we have three fields that provide us visibilty into WMI events namely `wmi_command`, `wmi_namespace` and `wmi_usr_fullname`
